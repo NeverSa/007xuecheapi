@@ -1,11 +1,18 @@
 const Service = require('egg').Service;
 const { ERROR, SUCCESS } = { ERROR: { error: true }, SUCCESS: { success: true } }
 class SubjectService extends Service {
-    async subject1ById() {
+    async subject1ById(category_id) {
         const { ctx } = this;
+        let where={};
+        if(category_id){
+            where={
+                category_id: category_id 
+            }
+        }
         try {
             const result = await ctx.model.Subject1.findAll({
-                attributes: ['id']
+                attributes: ['id'],
+                where: where
             });
             if (!result) {
                 ctx.status = 400;
@@ -67,28 +74,28 @@ class SubjectService extends Service {
     /**
      * 获取题目的分类信息
      */
-   async getCategorylist(){
-    const { ctx } = this;
-    const result =ctx.model.SubjectCategory.findAll({
-        attributes: ['category_id', 'category_name']
-    })
-    return result
-   }
-   /**
-    * 获取题目的分组count
-    */
-   async getCategoryCount(){
-    const { ctx, app } = this;
-    const result =ctx.model.SubjectCategory.findAll({
-        attributes: ['category_id']
-    })
-    return result
-   }
-   /**
-    * 
-    * @param {*} ids id数组
-    * @param {*} category_id 分类id
-    */
+    async getCategorylist() {
+        const { ctx } = this;
+        const result = ctx.model.SubjectCategory.findAll({
+            attributes: ['category_id', 'category_name']
+        })
+        return result
+    }
+    /**
+     * 获取题目的分组count
+     */
+    async getCategoryCount() {
+        const { ctx, app } = this;
+        const result = ctx.model.SubjectCategory.findAll({
+            attributes: ['category_id']
+        })
+        return result
+    }
+    /**
+     * 
+     * @param {*} ids id数组
+     * @param {*} category_id 分类id
+     */
     //批量更新类型id
     async updataCategory(ids, category_id) {
         const { ctx, app } = this;
