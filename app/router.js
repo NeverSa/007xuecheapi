@@ -14,4 +14,5 @@ module.exports = app => {
   router.get('/api/subject1/created', controller.subject.created);
   router.get('/api/subject1/updataCategory', controller.subject.updataCategory);
   router.get('/api/subject1/getCategorylist', controller.subject.getCategorylist);
+  router.get('/api/subject1/getExamlist', controller.subject.getExamlist);
 };

@@ -3,10 +3,10 @@ const { ERROR, SUCCESS } = { ERROR: { error: true }, SUCCESS: { success: true } 
 class SubjectService extends Service {
     async subject1ById(category_id) {
         const { ctx } = this;
-        let where={};
-        if(category_id){
-            where={
-                category_id: category_id 
+        let where = {};
+        if (category_id) {
+            where = {
+                category_id: category_id
             }
         }
         try {
@@ -70,6 +70,17 @@ class SubjectService extends Service {
             original_id: query.id
         };
         const result = await ctx.model.Subject1.create(post);
+    }
+    /**
+     * 随机获取100题
+     */
+    async getExamlist() {
+        const { ctx, app } = this;
+        const result = ctx.model.Subject1.findAll({
+            limit:100,
+            order:app.Sequelize.fn('rand')
+        })
+        return result
     }
     /**
      * 获取题目的分类信息
