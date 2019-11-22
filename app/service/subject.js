@@ -58,16 +58,16 @@ class SubjectService extends Service {
     async created(query) {
         const { ctx } = this;
         let post = {
-            a: query.a,
-            b: query.b,
-            c: query.c,
-            d: query.d,
-            type: query.Type,
+            a: query.item1,
+            b: query.item2,
+            c: query.item3,
+            d: query.item4,
+            type: query.type,
             question: query.question,
-            answer: query.ta,
-            imgurl: query.imageurl,
-            analysis: query.bestanswer,
-            original_id: query.id
+            answer: query.answer,
+            imgurl: query.image,
+            analysis: query.explain,
+            original_id: query.id,
         };
         const result = await ctx.model.Subject1.create(post);
     }

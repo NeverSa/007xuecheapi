@@ -44,7 +44,7 @@ module.exports = appInfo => {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
   // 图片上传地址
-  config.uploadDir = 'app/public/admin/upload';
+  config.uploadDir = 'app/public/uploads';
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
