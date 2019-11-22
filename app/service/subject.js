@@ -1,19 +1,29 @@
 const Service = require('egg').Service;
 const { ERROR, SUCCESS } = { ERROR: { error: true }, SUCCESS: { success: true } }
 class SubjectService extends Service {
-    async subject1ById(category_id) {
-        const { ctx } = this;
+    async subject1ById(query) {
         let where = {};
+        const { ctx } = this;
+        const { category_id, subject_id } = query;
         if (category_id) {
             where = {
                 category_id: category_id
             }
         }
         try {
-            const result = await ctx.model.Subject1.findAll({
-                attributes: ['id'],
-                where: where
-            });
+            let result;
+            if (subject_id == 1) {
+                result = await ctx.model.Subject1.findAll({
+                    attributes: ['id'],
+                    where: where
+                });
+            } else if (subject_id == 2) {
+                result = await ctx.model.Subject4.findAll({
+                    attributes: ['id'],
+                    where: where
+                });
+            }
+
             if (!result) {
                 ctx.status = 400;
                 return Object.assign(ERROR, {
@@ -31,14 +41,27 @@ class SubjectService extends Service {
     }
     async detail(query) {
         const { ctx } = this;
+        const { id, subject_id } = query;
         try {
-            const result = await ctx.model.Subject1.findAll(
-                {
-                    where: {
-                        id: query.id
+            let result = {};
+            if (subject_id == 1) {
+                result = await ctx.model.Subject1.findAll(
+                    {
+                        where: {
+                            id: id
+                        }
                     }
-                }
-            );
+                );
+            } else if (subject_id == 2) {
+                result = await ctx.model.Subject4.findAll(
+                    {
+                        where: {
+                            id: id
+                        }
+                    }
+                );
+            }
+
             if (!result) {
                 ctx.status = 400;
                 return Object.assign(ERROR, {
@@ -69,7 +92,7 @@ class SubjectService extends Service {
             analysis: query.explain,
             original_id: query.id,
         };
-        const result = await ctx.model.Subject1.create(post);
+        const result = await ctx.model.Subject4.create(post);
     }
     /**
      * 随机获取100题
@@ -77,8 +100,8 @@ class SubjectService extends Service {
     async getExamlist() {
         const { ctx, app } = this;
         const result = ctx.model.Subject1.findAll({
-            limit:100,
-            order:app.Sequelize.fn('rand')
+            limit: 100,
+            order: app.Sequelize.fn('rand')
         })
         return result
     }
@@ -109,16 +132,17 @@ class SubjectService extends Service {
      */
     //批量更新类型id
     async updataCategory(ids, category_id) {
+        console.log(ids)
         const { ctx, app } = this;
         const result = await ctx.model.Subject1.update({
             category_id: category_id,
         }, {
-            where: {
-                original_id: {
-                    [app.Sequelize.Op.in]: ids
+                where: {
+                    original_id: {
+                        [app.Sequelize.Op.in]: ids
+                    }
                 }
-            }
-        });
+            });
         return result
     }
     //根据类型获取题目
@@ -127,12 +151,12 @@ class SubjectService extends Service {
         const result = await ctx.model.Subject1.update({
             category_id: category_id,
         }, {
-            where: {
-                original_id: {
-                    [app.Sequelize.Op.in]: ids
+                where: {
+                    original_id: {
+                        [app.Sequelize.Op.in]: ids
+                    }
                 }
-            }
-        });
+            });
         return result
     }
 
